@@ -44,22 +44,31 @@ const images = [
 ];
 console.log(images);
 
-
-
 let activeIndex = 0;
 buildCarousel(images, activeIndex);
+
+const carouselContainer = document.querySelector('.container');
+carouselContainer.innerHTML += `<div><button id="reverse-btn" type="button">Premi per cambiare la direzione dello scorrimento automatico</button></div>`
 
 let idInterval = setInterval(moveCarouselForward, CHANGE_IMAGE_DELAY * 1000);
 
 const leftArrowButton = document.getElementById('left-arrow');
 const rightArrowButton = document.getElementById('right-arrow');
+const reverseDirectionBtn = document.getElementById('reverse-btn');
 
 leftArrowButton.addEventListener('click', moveCarouselPrevious);
 
-
 rightArrowButton.addEventListener('click', moveCarouselForward);
 
+reverseDirectionBtn.addEventListener('click', reverseAutoDirection);
 
+
+
+function reverseAutoDirection() {
+    console.log('cliccato');
+    clearInterval(idInterval)
+    idInterval = setInterval(moveCarouselPrevious, CHANGE_IMAGE_DELAY * 1000);
+}
 
 
 
@@ -76,7 +85,7 @@ function moveCarouselPrevious() {
     // se l'indice è in prima posizione si valorizza all'ultima posizione dell'array
     activeIndex = activeIndex > 0 ? activeIndex - 1 : images.length - 1;
     buildCarousel(images, activeIndex);
-    idInterval = setInterval(moveCarouselForward, CHANGE_IMAGE_DELAY * 1000);
+    idInterval = setInterval(moveCarouselPrevious, CHANGE_IMAGE_DELAY * 1000);
 }
 
 
@@ -94,7 +103,8 @@ function buildCarousel(urls, activeIndex) {
         content += `<div class="card"> 
                     <img class="${imageClass}" src="${url}" alt="${title}" />
                     <span class="${descriptionClass}"><h2>${title}</h2>${description}</span>
-                    </div>`;
+                    </div>
+                    `;
         contentThumbs += `<img class="${imageClass}" src="${url}" alt="${title}"/>`
     }
     // console.log({content});
